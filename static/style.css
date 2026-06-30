@@ -179,6 +179,11 @@ textarea {
     background: #f8d7da;
 }
 
+.status.cancelled {
+    background: #808080;
+    color: white;
+}
+
 .top-bar{
     display:flex;
     justify-content:space-between;
@@ -259,6 +264,12 @@ textarea {
 .waiting {
     background: #e9ecef;
     color: #666;
+}
+
+.flow-circle.cancelled {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
 }
 
 .alert {

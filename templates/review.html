@@ -2,7 +2,24 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    Approval Review Page
+
+    Displays the details of a request awaiting approval.
+
+    The current approver may:
+    • Approve the request
+    • Reject the request
+        (requires a reason)
+
+    Access:
+    • Authenticated approver with a valid approval link
+    =========================================================
+    -->
+
     <title>Request Review</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -11,27 +28,42 @@
     <div class="page-center">
 
         <div class="card" width="500px">
+
+            <!-- Display validation messages -->
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             {% for message in messages %}
+
             <div class="alert">
                 {{ message }}
             </div>
+
             {% endfor %}
             {% endif %}
             {% endwith %}
 
             <h2>Approval Request</h2>
 
+            <!-- =====================================================
+                Request Summary
+                ===================================================== -->
+
             <p><b>Name:</b> {{ requester.name }}</p>
+
             <p><b>Email:</b> {{ requester.email }}</p>
-            <p><b>Request Type:</b> {{ requester.request_type}}</p>
+
+            <p><b>Request Type:</b> {{ requester.request_type }}</p>
+
             <p><b>Current Stage:</b> {{ requester.curr_stage }}</p>
 
+            <!-- =====================================================
+                Approval Form
+                ===================================================== -->
             <form method="POST" action="{{ url_for('decision',
                         id=requester.id,
                         token=token) }}">
 
+                <!-- Optional approval comments / required rejection reason -->
                 <textarea name="reason" placeholder="Reason (required if rejecting)">
                 </textarea>
 
@@ -40,11 +72,15 @@
                     <div class="button-row">
 
                         <button type="submit" name="decision" value="approve" class="btn btn-success">
+
                             Approve
+
                         </button>
 
                         <button type="submit" name="decision" value="reject" class="btn btn-danger">
+
                             Reject
+
                         </button>
 
                     </div>

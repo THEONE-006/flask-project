@@ -2,7 +2,26 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    Analytics Dashboard
+
+    Displays an overview of all request types created in the
+    system.
+
+    Features:
+    • Request distribution by type
+    • Pie chart visualization
+    • Request counts
+    • Navigation to detailed analytics for each request type
+
+    Access:
+    • Administrators only
+    =========================================================
+    -->
+
     <title>Analytics</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -12,37 +31,85 @@
 
         <div class="card">
 
-            <h2>Analytics</h2>
-            <a href="{{ url_for('index') }}" class="btn btn-danger"> Back </a>
-            <h2>Requests By Type</h2>
+            <!-- =====================================================
+                Page Header
+                ===================================================== -->
+            <h>Analytics</h2>
 
-            <div class="analytics-container">
+                <!-- Return to the dashboard -->
+                <a href="{{ url_for('index') }}" class="btn btn-danger">
 
-                <div class="chart-section">
-                    <img src="{{ url_for('analytics_chart') }}" alt="Analytics Chart">
+                    Back
+
+                </a>
+
+                <h2>Requests By Type</h2>
+
+                <!-- =====================================================
+                Analytics Layout
+
+                Left Side:
+                • Pie chart showing request distribution
+
+                Right Side:
+                • Table containing request counts
+                ===================================================== -->
+                <div class="analytics-container">
+
+                    <!-- Pie Chart -->
+                    <div class="chart-section">
+
+                        <img src="{{ url_for('analytics_chart') }}" alt="Analytics Chart">
+
+                    </div>
+
+                    <!-- Request Count Table -->
+                    <div class="table-section">
+
+                        <table border="1">
+
+                            <tr>
+
+                                <th>Request Type</th>
+
+                                <th>Count</th>
+
+                            </tr>
+
+                            <!--
+                        Each request type links to a dedicated page
+                        containing more detailed analytics.
+                        -->
+                            {% for request_type, count in data %}
+
+                            <tr>
+
+                                <td>
+
+                                    <a href="{{ url_for('type_analytics',
+                                                    request_type=request_type) }}">
+
+                                        {{ request_type }}
+
+                                    </a>
+
+                                </td>
+
+                                <td>
+
+                                    {{ count }}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </table>
+
+                    </div>
+
                 </div>
-
-                <div class="table-section">
-                    <table border="1">
-                        <tr>
-                            <th>Request Type</th>
-                            <th>Count</th>
-                        </tr>
-
-                        {% for request_type, count in data %}
-                        <tr>
-                            <td>
-                                <a href="{{ url_for('type_analytics', request_type=request_type) }}">
-                                    {{ request_type }}
-                                </a>
-                            </td>
-                            <td>{{ count }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-
-            </div>
 
         </div>
 

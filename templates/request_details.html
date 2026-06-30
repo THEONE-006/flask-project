@@ -2,7 +2,27 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    Request Details Page
+
+    Displays comprehensive information about a single request,
+    including:
+
+    • Request metadata
+    • Current workflow stage
+    • Current request status
+    • Visual workflow progress
+    • Approval history
+
+    This page can be accessed by:
+    - The requester
+    - Administrators
+    =========================================================
+    -->
+
     <title>Request Details</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -12,22 +32,36 @@
 
         <div class="card">
 
+            <!-- Page Heading -->
             <h2>Request Details</h2>
 
+            <!-- =====================================================
+                Navigation Buttons
+                ===================================================== -->
             <div style="margin-bottom:20px;">
+
+                <!-- Administrators can return to the reports page -->
                 {% if session["role"] == "admin" %}
                 <a href="{{ url_for('reports') }}" class="btn btn-primary">
                     Back to reports
                 </a>
                 {% endif %}
 
+                <!-- Return to the main dashboard -->
                 <a href="{{ url_for('index') }}" class="btn btn-primary">
                     Dashboard
                 </a>
+
             </div>
 
             <br><br>
 
+            <!-- =====================================================
+                Request Information
+
+                Displays the primary information associated with
+                the selected request.
+                ===================================================== -->
             <div class="info-grid">
 
                 <div class="label">Request ID</div>
@@ -45,55 +79,125 @@
                 <div class="label">Current Stage</div>
                 <div>{{ requester.curr_stage }}</div>
 
+                <!-- Current request status -->
                 <div class="label">Status</div>
+
                 <div>
 
                     {% if requester.status == "Completed" %}
+
                     <span class="status completed">
                         Completed
                     </span>
 
                     {% elif requester.status == "Rejected" %}
+
                     <span class="status rejected">
                         Rejected
                     </span>
 
+                    {% elif requester.status == "Cancelled" %}
+
+                    <span class="status cancelled">
+                        Cancelled
+                    </span>
+
                     {% else %}
+
                     <span class="status pending">
                         Pending
                     </span>
+
                     {% endif %}
 
                 </div>
 
             </div>
+
+            <!-- =====================================================
+     Workflow Progress
+
+     Displays a visual representation of the configured
+     approval workflow.
+
+     Symbols:
+     ✓  Completed stage
+     ⏳ Current stage awaiting approval
+     ✖ Stage where the request was cancelled
+     ○ Stages not yet reached
+
+     The workflow is generated dynamically from the flow
+     configuration passed to the template.
+     ===================================================== -->
             <h3>Workflow Progress</h3>
 
             <div class="flow-container">
 
+                <!-- Iterate through every stage configured for this request -->
                 {% for stage in flow %}
 
                 <div class="flow-step">
 
-                    {% if loop.index0 < requester.curr_stage_id %} <div class="flow-circle done">✓</div>
-                <div class="flow-label">{{ stage["stage"] }}</div>
+                    <!-- Stages that have already been completed -->
+                    {% if loop.index0 < requester.curr_stage_id %} <div class="flow-circle done">
+                        ✓
+                </div>
 
-                {% elif loop.index0 == requester.curr_stage_id and requester.status == "Pending" %}
-                <div class="flow-circle current">⏳</div>
-                <div class="flow-label">{{ stage["stage"] }}</div>
+                <div class="flow-label">
+                    {{ stage["stage"] }}
+                </div>
 
+                <!-- Current stage while the request is pending -->
+                {% elif requester.status == "Pending"
+                and loop.index0 == requester.curr_stage_id %}
+
+                <div class="flow-circle current">
+                    ⏳
+                </div>
+
+                <div class="flow-label">
+                    {{ stage["stage"] }}
+                </div>
+
+                <!-- Stage where the request was cancelled -->
+                {% elif requester.status == "Cancelled"
+                and loop.index0 == requester.curr_stage_id %}
+
+                <div class="flow-circle cancelled">
+                    ✖
+                </div>
+
+                <div class="flow-label">
+                    {{ stage["stage"] }}
+                </div>
+
+                <!-- If the request has completed, every stage is marked done -->
                 {% elif requester.status == "Completed" %}
-                <div class="flow-circle done">✓</div>
-                <div class="flow-label">{{ stage["stage"] }}</div>
 
+                <div class="flow-circle done">
+                    ✓
+                </div>
+
+                <div class="flow-label">
+                    {{ stage["stage"] }}
+                </div>
+
+                <!-- Remaining stages that have not yet been reached -->
                 {% else %}
-                <div class="flow-circle waiting">○</div>
-                <div class="flow-label">{{ stage["stage"] }}</div>
+
+                <div class="flow-circle waiting">
+                    ○
+                </div>
+
+                <div class="flow-label">
+                    {{ stage["stage"] }}
+                </div>
 
                 {% endif %}
 
             </div>
 
+            <!-- Draw a connector between stages except after the last stage -->
             {% if not loop.last %}
             <div class="flow-line"></div>
             {% endif %}
@@ -101,6 +205,19 @@
             {% endfor %}
 
         </div>
+
+        <!-- =====================================================
+                Approval Timeline
+
+                Displays every workflow transition recorded in
+                ReportLog.
+
+                Each record contains:
+                • User who performed the action
+                • Previous stage
+                • Next stage
+                • Timestamp
+                ===================================================== -->
         <h3>Approval Timeline</h3>
 
         <table>
@@ -112,7 +229,9 @@
                 <th>Time</th>
             </tr>
 
+            <!-- Render approval history -->
             {% for log in logs %}
+
             <tr>
 
                 <td>{{ log.advanced_by }}</td>
@@ -124,6 +243,7 @@
                 <td>{{ log.advanced_at }}</td>
 
             </tr>
+
             {% endfor %}
 
         </table>

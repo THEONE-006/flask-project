@@ -2,7 +2,23 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    Login Page
+
+    Entry point for the application.
+
+    Users authenticate using an email-based One-Time Password
+    (OTP). After entering their email, an OTP is generated and
+    sent to the provided email address.
+
+    Access:
+    • Public
+    =========================================================
+    -->
+
     <title>Login</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -14,26 +30,34 @@
 
             <h2>Login</h2>
 
+            <!-- Display validation messages -->
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             {% for message in messages %}
+
             <div class="alert">
                 {{ message }}
             </div>
+
             {% endfor %}
             {% endif %}
             {% endwith %}
 
+            <!-- OTP Request Form -->
             <form method="POST" action="{{ url_for('send_otp') }}">
 
                 <label>Email</label>
+
                 <input type="email" name="email" required placeholder="xyz@abc.com">
 
                 <br><br>
 
+                <!-- Disable button to prevent duplicate submissions -->
                 <button type="submit" class="btn btn-primary" style="width:100%;"
                     onclick="this.disabled=true;this.form.submit();">
+
                     Send OTP
+
                 </button>
 
             </form>

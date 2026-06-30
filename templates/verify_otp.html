@@ -2,7 +2,19 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    OTP Verification Page
+
+    Allows the user to verify the One-Time Password (OTP)
+    received through email.
+
+    A successful verification creates the user's session.
+    =========================================================
+    -->
+
     <title>Verify OTP</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -14,27 +26,39 @@
 
             <h2>Verify OTP</h2>
 
+            <!-- Display recipient email -->
             <p>
-                OTP sent to <b>{{ email }}</b>
+
+                OTP sent to
+                <b>{{ email }}</b>
+
             </p>
 
+            <!-- OTP Verification Form -->
             <form method="POST" action="{{ url_for('verify_otp') }}">
 
                 <input type="hidden" name="email" value="{{ email }}">
 
                 <label>OTP</label>
+
                 <input type="text" name="otp" maxlength="6" required placeholder="123456">
 
                 <br><br>
 
                 <div class="button-row">
 
+                    <!-- Prevent duplicate verification -->
                     <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.form.submit();">
+
                         Verify
+
                     </button>
 
+                    <!-- Return to login -->
                     <a href="{{ url_for('login') }}" class="cancel-btn">
+
                         Back
+
                     </a>
 
                 </div>

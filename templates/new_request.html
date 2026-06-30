@@ -2,67 +2,135 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    Create Request Page
+
+    Allows authenticated users to submit a new approval request.
+
+    The requester provides:
+    • Personal information
+    • Manager's email
+    • Mobile number
+    • Request type
+
+    Once submitted, the workflow begins at the Manager Approval
+    stage.
+    =========================================================
+    -->
+
     <title>Create Request</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
+
+    <!-- Center the request form on the page -->
     <div class="page-center">
 
         <div class="card">
 
+            <!-- Page Heading -->
             <h2>Create Request</h2>
 
+            <!--
+            Display validation or submission errors returned by Flask.
+            -->
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             {% for message in messages %}
+
             <div class="alert">
                 {{ message }}
             </div>
+
             {% endfor %}
             {% endif %}
             {% endwith %}
 
+            <!-- =====================================================
+                Request Creation Form
+                ===================================================== -->
             <form method="POST" action="{{ url_for('create') }}">
 
+                <!-- Requester's Name -->
                 <label>Name</label>
+
                 <input type="text" name="name" required placeholder="Xyz" pattern="^[A-Za-z\s]+$">
+
                 <br><br>
 
+                <!-- Requester's Email -->
                 <label>Email</label>
+
                 <input type="email" name="email" value="{{ session.get('email', '') }}" required
                     placeholder="xyz@example.com">
+
                 <br><br>
 
+                <!-- Mobile Number -->
                 <label>Mobile Number</label>
+
                 <input type="text" name="mobno" required placeholder="9876543210" pattern="\d{10}">
+
                 <br><br>
 
+                <!-- Immediate Manager -->
                 <label>Immediate Manager Email</label>
+
                 <input type="email" name="man_email" required placeholder="abc@example.com">
+
                 <br><br>
 
+                <!-- =================================================
+                    Request Type Selection
+
+                    Available request types are populated from
+                    Config.TYPES.
+                    ================================================= -->
                 <label>Request Type</label>
+
                 <select name="request_type" required>
+
                     <option value="" selected disabled>
+
                         Select Request Type
+
                     </option>
 
+                    <!-- Populate all configured request types -->
                     {% for type in types %}
-                    <option value="{{type}}">
+
+                    <option value="{{ type }}">
                         {{ type }}
                     </option>
+
                     {% endfor %}
+
                 </select>
+
                 <br><br>
 
+                <!-- =================================================
+                    Form Actions
+                    ================================================= -->
                 <div class="button-row">
-                    <button class="btn btn-primary" type="submit"
-                        onclick="this.disabled=true;this.form.submit();">Submit</button>
 
+                    <!-- Prevent accidental double submission -->
+                    <button class="btn btn-primary" type="submit" onclick="this.disabled=true;this.form.submit();">
+
+                        Submit
+
+                    </button>
+
+                    <!-- Return to Dashboard -->
                     <a href="{{ url_for('index') }}" class="cancel-btn">
+
                         Back
+
                     </a>
+
                 </div>
 
             </form>

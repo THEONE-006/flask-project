@@ -2,7 +2,27 @@
 <html>
 
 <head>
+    <!--
+    =========================================================
+    Reports Dashboard
+
+    This page provides administrators with a centralized view
+    of all submitted requests.
+
+    Features:
+    • View all requests
+    • Filter requests by status
+    • View request details
+    • Monitor current assignees
+    • Navigate through paginated results
+
+    Access:
+    • Administrators only
+    =========================================================
+    -->
+
     <title>Reports</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -12,88 +32,184 @@
 
         <div class="card" width="800px">
 
+            <!-- Page Heading -->
             <h2>Approval Reports</h2>
 
+            <!-- =====================================================
+                Top Navigation Bar
+
+                Contains navigation back to the dashboard together
+                with request statistics that double as filters.
+                ===================================================== -->
             <div class="top-bar">
 
+                <!-- Navigation -->
                 <div class="left-actions">
+
                     <a href="{{ url_for('index') }}" class="btn btn-danger">
+
                         Dashboard
+
                     </a>
+
                 </div>
 
+                <!-- Request Statistics -->
                 <div class="stats-bar">
+
                     <a href="{{ url_for('reports') }}" class="btn btn-primary">
-                        Total: {{stats.total}}
+
+                        Total: {{ stats.total }}
+
                     </a>
-                    <a href="{{ url_for('reports', status='Pending') }}" class="btn btn-primary">
-                        Pending: {{stats.pending}}
+
+                    <a href="{{ url_for('reports',
+                                        status='Pending') }}" class="btn btn-primary">
+
+                        Pending: {{ stats.pending }}
+
                     </a>
-                    <a href="{{ url_for('reports', status='Completed') }}" class="btn btn-primary">
-                        Completed: {{stats.completed}}
+
+                    <a href="{{ url_for('reports',
+                                        status='Completed') }}" class="btn btn-primary">
+
+                        Completed: {{ stats.completed }}
+
                     </a>
-                    <a href="{{ url_for('reports', status='Rejected') }}" class="btn btn-primary">
-                        Rejected: {{stats.rejected}}
+
+                    <a href="{{ url_for('reports',
+                                        status='Rejected') }}" class="btn btn-primary">
+
+                        Rejected: {{ stats.rejected }}
+
                     </a>
+
+                    <!-- Display only if Cancelled requests are supported -->
+                    {% if stats.cancelled is defined %}
+
+                    <a href="{{ url_for('reports',
+                                        status='Cancelled') }}" class="btn btn-primary">
+
+                        Cancelled: {{ stats.cancelled }}
+
+                    </a>
+
+                    {% endif %}
+
                 </div>
 
             </div>
 
+            <!-- Display the currently selected filter -->
             <h3 class="filter-title">
                 {{ current_filter }}
             </h3>
 
+            <!-- =====================================================
+                Reports Table
+
+                Displays every request matching the selected filter.
+                ===================================================== -->
             <table>
+
                 <tr>
+
                     <th>Name</th>
+
                     <th>Email</th>
+
                     <th>Request Type</th>
+
                     <th>Current Stage</th>
+
                     <th>Current Assignee</th>
+
                     <th>Status</th>
+
                     <th>Progress</th>
+
                     <th>Actions</th>
+
                 </tr>
 
+                <!-- Render every request -->
                 {% for requester in requesters %}
+
                 <tr>
+
                     <td>{{ requester.name }}</td>
+
                     <td>{{ requester.email }}</td>
-                    <td>{{ requester.request_type}}</td>
+
+                    <td>{{ requester.request_type }}</td>
+
                     <td>{{ requester.curr_stage }}</td>
+
                     <td>{{ requester.current_assignee }}</td>
+
                     <td>{{ requester.status }}</td>
+
                     <td>{{ requester.progress }}</td>
+
+                    <!-- View approval history -->
                     <td>
-                        <a href="{{ url_for('request_details', id=requester.id) }}" class="btn btn-primary">
-                            logs
+
+                        <a href="{{ url_for('request_details',
+                                            id=requester.id) }}" class="btn btn-primary">
+
+                            Logs
+
                         </a>
+
                     </td>
+
                 </tr>
+
                 {% endfor %}
 
             </table>
 
-            {%if not requesters%}
-            <br></br>
+            <!-- Display when no matching requests exist -->
+            {% if not requesters %}
+
+            <br>
+
             <h3>No records</h3>
+
             {% endif %}
+
+            <!-- =====================================================
+                Pagination
+
+                Navigate between report pages.
+                ===================================================== -->
             <div class="pagination">
 
                 {% if pagination.has_prev %}
+
                 <a href="?page={{ pagination.prev_num }}" class="btn btn-primary">
+
                     Previous
+
                 </a>
+
                 {% endif %}
 
                 <span>
-                    Page {{ pagination.page }} of {{ pagination.pages }}
+
+                    Page {{ pagination.page }}
+                    of {{ pagination.pages }}
+
                 </span>
 
                 {% if pagination.has_next %}
+
                 <a href="?page={{ pagination.next_num }}" class="btn btn-primary">
+
                     Next
+
                 </a>
+
                 {% endif %}
 
             </div>
