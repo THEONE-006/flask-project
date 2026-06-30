@@ -114,28 +114,6 @@ SECURITY_EMAIL=security@example.com
 
 You may also update `.env.example` so future users know this variable is required.
 
-flask-project/
-
-├── app.py
-├── config.py
-├── requirements.txt
-├── .env.example
-├── README.md
-├── migrations/
-├── static/
-│   └── style.css
-├── templates/
-│   ├── login.html
-│   ├── verify_otp.html
-│   ├── index.html
-│   ├── new_request.html
-│   ├── review.html
-│   ├── reports.html
-│   ├── analytics.html
-│   ├── type_analytics.html
-│   └── request_details.html
-└── screenshots/
-
 ## Screenshots
 
 ## Future Improvements
