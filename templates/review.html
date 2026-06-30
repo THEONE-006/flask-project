@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Request Review</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="page-center">
+
+        <div class="card" width="500px">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <h2>Approval Request</h2>
+
+            <p><b>Name:</b> {{ requester.name }}</p>
+            <p><b>Email:</b> {{ requester.email }}</p>
+            <p><b>Request Type:</b> {{ requester.request_type}}</p>
+            <p><b>Current Stage:</b> {{ requester.curr_stage }}</p>
+
+            <form method="POST" action="{{ url_for('decision',
+                        id=requester.id,
+                        token=token) }}">
+
+                <textarea name="reason" placeholder="Reason (required if rejecting)">
+                </textarea>
+
+                <div class="actions">
+
+                    <div class="button-row">
+
+                        <button type="submit" name="decision" value="approve" class="btn btn-success">
+                            Approve
+                        </button>
+
+                        <button type="submit" name="decision" value="reject" class="btn btn-danger">
+                            Reject
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

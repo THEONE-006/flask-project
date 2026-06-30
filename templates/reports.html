@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card" width="800px">
+
+            <h2>Approval Reports</h2>
+
+            <div class="top-bar">
+
+                <div class="left-actions">
+                    <a href="{{ url_for('index') }}" class="btn btn-danger">
+                        Dashboard
+                    </a>
+                </div>
+
+                <div class="stats-bar">
+                    <a href="{{ url_for('reports') }}" class="btn btn-primary">
+                        Total: {{stats.total}}
+                    </a>
+                    <a href="{{ url_for('reports', status='Pending') }}" class="btn btn-primary">
+                        Pending: {{stats.pending}}
+                    </a>
+                    <a href="{{ url_for('reports', status='Completed') }}" class="btn btn-primary">
+                        Completed: {{stats.completed}}
+                    </a>
+                    <a href="{{ url_for('reports', status='Rejected') }}" class="btn btn-primary">
+                        Rejected: {{stats.rejected}}
+                    </a>
+                </div>
+
+            </div>
+
+            <h3 class="filter-title">
+                {{ current_filter }}
+            </h3>
+
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Request Type</th>
+                    <th>Current Stage</th>
+                    <th>Current Assignee</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Actions</th>
+                </tr>
+
+                {% for requester in requesters %}
+                <tr>
+                    <td>{{ requester.name }}</td>
+                    <td>{{ requester.email }}</td>
+                    <td>{{ requester.request_type}}</td>
+                    <td>{{ requester.curr_stage }}</td>
+                    <td>{{ requester.current_assignee }}</td>
+                    <td>{{ requester.status }}</td>
+                    <td>{{ requester.progress }}</td>
+                    <td>
+                        <a href="{{ url_for('request_details', id=requester.id) }}" class="btn btn-primary">
+                            logs
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+            {%if not requesters%}
+            <br></br>
+            <h3>No records</h3>
+            {% endif %}
+            <div class="pagination">
+
+                {% if pagination.has_prev %}
+                <a href="?page={{ pagination.prev_num }}" class="btn btn-primary">
+                    Previous
+                </a>
+                {% endif %}
+
+                <span>
+                    Page {{ pagination.page }} of {{ pagination.pages }}
+                </span>
+
+                {% if pagination.has_next %}
+                <a href="?page={{ pagination.next_num }}" class="btn btn-primary">
+                    Next
+                </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

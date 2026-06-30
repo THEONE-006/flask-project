@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Create Request</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="page-center">
+
+        <div class="card">
+
+            <h2>Create Request</h2>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('create') }}">
+
+                <label>Name</label>
+                <input type="text" name="name" required placeholder="Xyz" pattern="^[A-Za-z\s]+$">
+                <br><br>
+
+                <label>Email</label>
+                <input type="email" name="email" value="{{ session.get('email', '') }}" required
+                    placeholder="xyz@example.com">
+                <br><br>
+
+                <label>Mobile Number</label>
+                <input type="text" name="mobno" required placeholder="9876543210" pattern="\d{10}">
+                <br><br>
+
+                <label>Immediate Manager Email</label>
+                <input type="email" name="man_email" required placeholder="abc@example.com">
+                <br><br>
+
+                <label>Request Type</label>
+                <select name="request_type" required>
+                    <option value="" selected disabled>
+                        Select Request Type
+                    </option>
+
+                    {% for type in types %}
+                    <option value="{{type}}">
+                        {{ type }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <br><br>
+
+                <div class="button-row">
+                    <button class="btn btn-primary" type="submit"
+                        onclick="this.disabled=true;this.form.submit();">Submit</button>
+
+                    <a href="{{ url_for('index') }}" class="cancel-btn">
+                        Back
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

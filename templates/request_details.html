@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Request Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Request Details</h2>
+
+            <div style="margin-bottom:20px;">
+                {% if session["role"] == "admin" %}
+                <a href="{{ url_for('reports') }}" class="btn btn-primary">
+                    Back to reports
+                </a>
+                {% endif %}
+
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    Dashboard
+                </a>
+            </div>
+
+            <br><br>
+
+            <div class="info-grid">
+
+                <div class="label">Request ID</div>
+                <div>REQ_{{ requester.id }}</div>
+
+                <div class="label">Name</div>
+                <div>{{ requester.name }}</div>
+
+                <div class="label">Email</div>
+                <div>{{ requester.email }}</div>
+
+                <div class="label">Request Type</div>
+                <div>{{ requester.request_type }}</div>
+
+                <div class="label">Current Stage</div>
+                <div>{{ requester.curr_stage }}</div>
+
+                <div class="label">Status</div>
+                <div>
+
+                    {% if requester.status == "Completed" %}
+                    <span class="status completed">
+                        Completed
+                    </span>
+
+                    {% elif requester.status == "Rejected" %}
+                    <span class="status rejected">
+                        Rejected
+                    </span>
+
+                    {% else %}
+                    <span class="status pending">
+                        Pending
+                    </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+            <h3>Workflow Progress</h3>
+
+            <div class="flow-container">
+
+                {% for stage in flow %}
+
+                <div class="flow-step">
+
+                    {% if loop.index0 < requester.curr_stage_id %} <div class="flow-circle done">✓</div>
+                <div class="flow-label">{{ stage["stage"] }}</div>
+
+                {% elif loop.index0 == requester.curr_stage_id and requester.status == "Pending" %}
+                <div class="flow-circle current">⏳</div>
+                <div class="flow-label">{{ stage["stage"] }}</div>
+
+                {% elif requester.status == "Completed" %}
+                <div class="flow-circle done">✓</div>
+                <div class="flow-label">{{ stage["stage"] }}</div>
+
+                {% else %}
+                <div class="flow-circle waiting">○</div>
+                <div class="flow-label">{{ stage["stage"] }}</div>
+
+                {% endif %}
+
+            </div>
+
+            {% if not loop.last %}
+            <div class="flow-line"></div>
+            {% endif %}
+
+            {% endfor %}
+
+        </div>
+        <h3>Approval Timeline</h3>
+
+        <table>
+
+            <tr>
+                <th>Approved By</th>
+                <th>From Stage</th>
+                <th>To Stage</th>
+                <th>Time</th>
+            </tr>
+
+            {% for log in logs %}
+            <tr>
+
+                <td>{{ log.advanced_by }}</td>
+
+                <td>{{ log.curr_stage }}</td>
+
+                <td>{{ log.next_stage }}</td>
+
+                <td>{{ log.advanced_at }}</td>
+
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    </div>
+
+</body>
+
+</html>

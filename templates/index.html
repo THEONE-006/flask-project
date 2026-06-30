@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Requests Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h2>Request Dashboard</h2>
+
+    <div class="top-bar">
+
+        <div class="left-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                New Request
+            </a>
+
+            {% if session["role"] == "admin" %}
+            <a href="{{ url_for('reports') }}" class="btn btn-primary">
+                Reports
+            </a>
+            <a href="{{ url_for('analytics') }}" class="btn btn-primary">
+                Analytics
+            </a>
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}" class="btn btn-danger"
+                onclick="return confirm('Are you sure you want to logout?');">
+                Logout
+            </a>
+        </div>
+
+        <div class="search-bar">
+
+            {% if session["role"] == "admin" %}
+            <form method="GET" action="{{ url_for('by_assignee') }}">
+
+                <div class="search-row">
+
+                    <input type="email" name="assignee" placeholder="Search assignee" required>
+
+                    <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.form.submit();">
+                        Search
+                    </button>
+
+                </div>
+
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+            </form>
+            {% endif %}
+        </div>
+
+    </div>
+
+    {%if assignee%}
+    <h3>Pending for {{assignee}}</h3>
+    <a href="/" class="btn btn-danger">
+        Back
+    </a>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Request Type</th>
+            <th>Current Stage</th>
+            <th>Current Assignee</th>
+            <th>Status</th>
+            <th>Progress</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for requester in requesters %}
+        <tr>
+            <td>
+                <a href="{{ url_for('request_details', id=requester.id) }}">
+                    {{ requester.name }}
+                </a>
+            </td>
+            <td>{{ requester.email }}</td>
+            <td>{{ requester.request_type}}</td>
+            <td>{{ requester.curr_stage }}</td>
+            <td>{{ requester.current_assignee }}</td>
+            <td>{{ requester.status }}</td>
+            <td>{{ requester.progress }}</td>
+            <td>
+                {% if session["role"] == "admin" %}
+                <form method="POST" action="{{ url_for('delete_request', id=requester.id) }}"
+                    onsubmit="return confirm('Delete request?');">
+
+                    <button type="submit" class="btn btn-danger">
+                        Delete
+                    </button>
+
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    {%if not requesters%}
+    <br></br>
+    <h3>No pending requests</h3>
+    {% endif %}
+
+    <div class="pagination">
+
+        {% if pagination.has_prev %}
+        <a href="{{ url_for(request.endpoint,
+            assignee=assignee,
+            page=pagination.prev_num) }}" class="btn btn-primary">
+            Previous
+        </a>
+        {% endif %}
+
+        <span>
+            Page {{ pagination.page}} of {{ pagination.pages or 1}}
+        </span>
+
+        {% if pagination.has_next %}
+        <a href="{{ url_for(request.endpoint,
+            assignee=assignee,
+            page=pagination.next_num) }}" class="btn btn-primary">
+            Next
+        </a>
+        {% endif %}
+
+    </div>
+</body>
+
+</html>

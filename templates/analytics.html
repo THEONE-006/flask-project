@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Analytics</h2>
+            <a href="{{ url_for('index') }}" class="btn btn-danger"> Back </a>
+            <h2>Requests By Type</h2>
+
+            <div class="analytics-container">
+
+                <div class="chart-section">
+                    <img src="{{ url_for('analytics_chart') }}" alt="Analytics Chart">
+                </div>
+
+                <div class="table-section">
+                    <table border="1">
+                        <tr>
+                            <th>Request Type</th>
+                            <th>Count</th>
+                        </tr>
+
+                        {% for request_type, count in data %}
+                        <tr>
+                            <td>
+                                <a href="{{ url_for('type_analytics', request_type=request_type) }}">
+                                    {{ request_type }}
+                                </a>
+                            </td>
+                            <td>{{ count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

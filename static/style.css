@@ -1,0 +1,320 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 30px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.card {
+    /* width: 600px; */
+
+    background: white;
+    padding: 30px;
+
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.1);
+}
+
+.page-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #0d6efd;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+    margin-top:20px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 12px;
+    border-radius: 6px;
+
+    text-decoration: none;
+    border: none;
+
+    cursor: pointer;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+}
+
+.cancel-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #6c757d;
+    color: white;
+
+    text-decoration: none;
+    border-radius: 6px;
+
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+    background: #dc3545;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-row button,
+.button-row a {
+    flex: 1;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 180px auto;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.pending {
+    background: #fff3cd;
+}
+
+.completed {
+    background: #d1e7dd;
+}
+
+.rejected {
+    background: #f8d7da;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.left-actions{
+    display:flex;
+    gap:10px;
+}
+
+.search-bar{
+    display:flex;
+    gap:15px;
+    font-weight:600;
+    color:#555;
+}
+
+.search-bar span{
+    background:white;
+    padding:8px 14px;
+    border-radius:8px;
+    box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+
+.flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+}
+
+.flow-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.flow-label {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.flow-line {
+    width: 80px;
+    height: 4px;
+    background: #d0d7de;
+    margin: 0 10px;
+}
+
+.done {
+    background: #28a745;
+    color: white;
+}
+
+.current {
+    background: #ffc107;
+    color: black;
+}
+
+.waiting {
+    background: #e9ecef;
+    color: #666;
+}
+
+.alert {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+
+    padding: 12px;
+    margin-bottom: 15px;
+
+    border-radius: 6px;
+}
+
+.search-row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.search-row input{
+    min-width:250px;
+}
+
+.flash-message{
+    margin-top:6px;
+    color:#dc3545;
+    font-size:14px;
+    font-weight:500;
+}
+
+.analytics-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.chart-section {
+    flex: 1;
+}
+
+.chart-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+.table-section {
+    flex: 1;
+}
+
+.table-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-section th,
+.table-section td {
+    padding: 8px;
+    text-align: left;
+}

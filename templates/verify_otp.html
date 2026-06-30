@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="page-center">
+
+        <div class="card">
+
+            <h2>Verify OTP</h2>
+
+            <p>
+                OTP sent to <b>{{ email }}</b>
+            </p>
+
+            <form method="POST" action="{{ url_for('verify_otp') }}">
+
+                <input type="hidden" name="email" value="{{ email }}">
+
+                <label>OTP</label>
+                <input type="text" name="otp" maxlength="6" required placeholder="123456">
+
+                <br><br>
+
+                <div class="button-row">
+
+                    <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.form.submit();">
+                        Verify
+                    </button>
+
+                    <a href="{{ url_for('login') }}" class="cancel-btn">
+                        Back
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

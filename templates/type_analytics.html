@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ request_type }} Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- <h3>Stage Duration Analysis</h3>
+
+            <img src="{{ url_for('bottleneck_chart',
+                request_type=request_type) }}" alt="Bottleneck Chart"> -->
+
+            <div class="top-bar">
+                <h2>{{ request_type }} Analytics</h2>
+
+                <a href="{{ url_for('analytics') }}" class="btn btn-danger"> Back </a>
+            </div>
+
+            <div class="stats-bar">
+                <span>
+                    <h4>Total Requests: {{ num_requests }}</h4>
+                </span>
+                <span>
+                    {% if avg_time < 1 %} <h4>Avg Resolution: {{ "%.0f"|format(avg_time * 60) }} mins</h4>
+
+                        {% elif avg_time < 24 %} <h4>Avg Resolution: {{ "%.2f"|format(avg_time) }} hrs</h4>
+
+                            {% else %}
+                            <h4>Avg Resolution: {{ "%.2f"|format(avg_time / 24) }} days</h4>
+
+                            {% endif %}
+                </span>
+            </div>
+
+            <h3>Requests</h3>
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Current Stage</th>
+                    <th>Created</th>
+                </tr>
+
+                {% for requester in requests %}
+
+                <tr>
+                    <td>
+                        <a href="{{ url_for('request_details', id=requester.id) }}">
+                            #{{ requester.id }}
+                        </a>
+                    </td>
+
+                    <td>{{ requester.name }}</td>
+
+                    <td>{{ requester.email }}</td>
+
+                    <td>{{ requester.status }}</td>
+
+                    <td>{{ requester.curr_stage }}</td>
+
+                    <td>{{ requester.created_at }}</td>
+                </tr>
+
+                {% endfor %}
+            </table>
+
+            <br>
+
+            <div class="pagination">
+
+                {% if pagination.has_prev %}
+                <a href="?page={{ pagination.prev_num }}" class="btn btn-primary">
+                    Previous
+                </a>
+                {% endif %}
+
+                <span>
+                    Page {{ pagination.page }} of {{ pagination.pages }}
+                </span>
+
+                {% if pagination.has_next %}
+                <a href="?page={{ pagination.next_num }}" class="btn btn-primary">
+                    Next
+                </a>
+                {% endif %}
+
+            </div>
+
+            <br />
+
+            <h3>Bottleneck Analysis</h3>
+
+            <table>
+                <tr>
+                    <th>Stage</th>
+                    <th>Average Time</th>
+                </tr>
+
+                {% for stage,hours in bottlenecks %}
+
+                <tr>
+                    <td>{{ stage }}</td>
+
+                    {% if hours < 1 %} <td>{{ "%.0f"|format(hours * 60) }} mins</td>
+
+                        {% elif hours < 24 %} <td>{{ "%.2f"|format(hours) }} hrs</td>
+
+                            {% else %}
+                            <td>Avg Resolution: {{ "%.2f"|format(hours / 24) }} days</td>
+
+                            {% endif %}
+                </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

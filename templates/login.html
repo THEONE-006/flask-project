@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="page-center">
+
+        <div class="card">
+
+            <h2>Login</h2>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('send_otp') }}">
+
+                <label>Email</label>
+                <input type="email" name="email" required placeholder="xyz@abc.com">
+
+                <br><br>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;"
+                    onclick="this.disabled=true;this.form.submit();">
+                    Send OTP
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
